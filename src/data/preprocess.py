@@ -21,7 +21,7 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def preprocess_target(df: pd.DataFrame) -> pd.DataFrame:
-    df[config.TARGET_COLS] = df[config.TARGET_COLS].astype(np.int8)
+    df[config.TARGET_COLS] = df[config.TARGET_COLS].astype(np.int64)
     return df
 
 def extract_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:

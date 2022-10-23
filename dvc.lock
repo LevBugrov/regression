@@ -80,3 +80,21 @@ stages:
     - path: reports/evaluate/evaluation.json
       md5: 5c7a4a6fc0b0c91794a947276dfe6211
       size: 183
+  inference:
+    cmd: python src/models/predict_model.py data/raw/test.csv models/catboost.pkl
+      models/ridge.pkl reports/inference/
+    deps:
+    - path: data/raw/test.csv
+      md5: dcec4b79bf9c7317bd9e17789bf888f0
+      size: 451405
+    - path: models/catboost.pkl
+      md5: 80e0157609a96b7d0e73c248c9f9b132
+      size: 2179584
+    - path: models/ridge.pkl
+      md5: 56243fad928d4089c754652438dd0d93
+      size: 2114
+    outs:
+    - path: reports/inference
+      md5: 4eb550cced9b7668043878e87e579ead.dir
+      size: 55228
+      nfiles: 2
