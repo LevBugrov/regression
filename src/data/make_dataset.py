@@ -32,11 +32,12 @@ def main(input_filepath,
     #df['LotFrontage'].fillna(df['LotFrontage'].mean(), inplace = True)
     
     
-    df = df.reindex(range(1460))
-    print(df[cfg.CAT_COLS]) #= df[cfg.CAT_COLS].astype('category')
+    df = df.set_index('Id')
     df = drop_unnecesary(df)
     df = df.dropna()
     df = preprocess_data(df)
+    df = df.fillna(0)
+    df[cfg.CAT_COLS_dr] = df[cfg.CAT_COLS_dr].astype('category')
     if not os.path.isdir("data/interim"):
         os.makedirs("data/interim")
         with open(".gitkeep", "w") as _:
@@ -45,9 +46,7 @@ def main(input_filepath,
     encod = LabelEncoder()
     for i in cfg.OHE_COLS:
         df[i] = encod.fit_transform(df[i])
-    for i in cfg.REAL_COLS:
-        df[i] = encod.fit_transform(df[i])
-    for i in cfg.CAT_COLS:
+    for i in cfg.CAT_COLS_dr:
         df[i] = encod.fit_transform(df[i])
     
     
