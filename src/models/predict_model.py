@@ -41,6 +41,13 @@ def main(input_data_filepath, input_catboost_model, input_sklearn_model, output_
        'GarageCond', 'PavedDrive',
        'SaleType', 'SaleCondition']
     
+    test_data = test_data.set_index('Id')
+    test_data = drop_unnecesary(test_data)
+    test_data = test_data.dropna()
+    test_data = preprocess_data(test_data)
+    test_data = test_data.fillna(0)
+    test_data[CAT_COLS_dr] = test_data[CAT_COLS_dr].astype('category')
+    
     encod = LabelEncoder()
     for i in cfg.OHE_COLS:
         test_data[i] = encod.fit_transform(test_data[i])
@@ -57,15 +64,15 @@ def main(input_data_filepath, input_catboost_model, input_sklearn_model, output_
     catboost_prediction = catboost_model.predict(test_data)
     sklearn_prediction = sklearn_model.predict(test_data)
 
-    df_pred_sc = pd.DataFrame(sklearn_prediction, columns = cfg.TARGET_COLS, index=test_data.index)
-    df_pred_cb = pd.DataFrame(catboost_prediction, columns = cfg.TARGET_COLS, index=test_data.index)
+    test_data_pred_sc = pd.DataFrame(sklearn_prediction, columns = cfg.TARGET_COLS, index=test_data.index)
+    test_data_pred_cb = pd.DataFrame(catboost_prediction, columns = cfg.TARGET_COLS, index=test_data.index)
     
     
     if not os.path.isdir("reports/inference"):
         os.makedirs("reports/inference")
         
-    df_pred_sc.to_csv(output_predictions_filepath + 'sklearn_pred.csv')
-    df_pred_cb.to_csv(output_predictions_filepath + 'catboost_pred.csv')
+    test_data_pred_sc.to_csv(output_predictions_filepath + 'sklearn_pred.csv')
+    test_data_pred_cb.to_csv(output_predictions_filepath + 'catboost_pred.csv')
 
 
 
