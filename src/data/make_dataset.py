@@ -7,6 +7,7 @@ from src.utils import save_as_pickle
 from preprocess import preprocess_data, preprocess_target, extract_target, cast_types, drop_unnecesary
 import pandas as pd
 import os
+import numpy as np
 from sklearn.model_selection import train_test_split
 import src.config as cfg
 from sklearn.preprocessing import LabelEncoder
@@ -63,7 +64,7 @@ def main(input_filepath,
     
     if output_target_filepath:
         df, target = df.drop(cfg.TARGET_COLS, axis=1), df[cfg.TARGET_COLS]
-        target[config.TARGET_COLS] = target[config.TARGET_COLS].astype(np.int64)
+        target[cfg.TARGET_COLS] = target[cfg.TARGET_COLS].astype(np.int64)
         train_x, val_x, train_y, val_y = train_test_split(df, target, test_size=0.2, 
                                                       shuffle=True, random_state=42, 
                                                       )
