@@ -63,7 +63,7 @@ def main(input_filepath,
     
     if output_target_filepath:
         df, target = df.drop(cfg.TARGET_COLS, axis=1), df[cfg.TARGET_COLS]
-        target = preprocess_target(target)
+        target[config.TARGET_COLS] = target[config.TARGET_COLS].astype(np.int64)
         train_x, val_x, train_y, val_y = train_test_split(df, target, test_size=0.2, 
                                                       shuffle=True, random_state=42, 
                                                       )
