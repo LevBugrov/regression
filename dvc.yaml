@@ -40,3 +40,12 @@ stages:
     metrics:
     - reports/evaluate/evaluation.json:
         cache: false
+
+  inference:
+    cmd: python src/models/predict_model.py data/raw/test.csv models/catboost.pkl models/ridge.pkl reports/inference/
+    deps:
+    - models/catboost.pkl
+    - models/ridge.pkl
+    - data/raw/test.csv
+    outs:
+    - reports/inference

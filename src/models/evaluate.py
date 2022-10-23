@@ -51,8 +51,8 @@ def main(input_data_filepath, input_target_filepath, input_catboost_model, input
                'MAE_reg': mean_absolute_error(target, sklearn_prediction)}
 
     
-    if not os.path.isdir("models"):
-        os.makedirs("models")
+    if not os.path.isdir("reports/evaluate"):
+        os.makedirs("reports/evaluate")
         with open(".gitkeep", "w") as _:
             pass    
     
