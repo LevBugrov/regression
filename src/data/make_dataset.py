@@ -29,7 +29,18 @@ def main(input_filepath,
 
     df = pd.read_csv(input_filepath)
     
-    #df['LotFrontage'].fillna(df['LotFrontage'].mean(), inplace = True)
+    
+    # почему питон не хочет читать обновленный файл конфига? я просто оставлю это здесь 
+    
+    CAT_COLS_dr = ['MSZoning', 'Street', 'LotShape', 'LandContour', 'Utilities',
+       'LotConfig', 'LandSlope', 'Neighborhood', 'Condition1', 'Condition2',
+       'BldgType', 'HouseStyle', 'RoofStyle', 'RoofMatl', 'Exterior1st',
+       'Exterior2nd', 'MasVnrType', 'ExterQual', 'ExterCond', 'Foundation',
+       'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 
+       'Heating', 'HeatingQC', 'CentralAir', 'Electrical', 'KitchenQual',
+       'Functional', 'GarageType', 'GarageFinish', 'GarageQual',
+       'GarageCond', 'PavedDrive',
+       'SaleType', 'SaleCondition']
     
     
     df = df.set_index('Id')
@@ -37,7 +48,7 @@ def main(input_filepath,
     df = df.dropna()
     df = preprocess_data(df)
     df = df.fillna(0)
-    df[cfg.CAT_COLS_dr] = df[cfg.CAT_COLS_dr].astype('category')
+    df[CAT_COLS_dr] = df[CAT_COLS_dr].astype('category')
     if not os.path.isdir("data/interim"):
         os.makedirs("data/interim")
         with open(".gitkeep", "w") as _:
@@ -46,16 +57,16 @@ def main(input_filepath,
     encod = LabelEncoder()
     for i in cfg.OHE_COLS:
         df[i] = encod.fit_transform(df[i])
-    for i in cfg.CAT_COLS_dr:
+    for i in CAT_COLS_dr:
         df[i] = encod.fit_transform(df[i])
     
     
     if output_target_filepath:
-        df, target = extract_target(df)
+        df, target = df.drop(cfg.TARGET_COLS, axis=1), df[cfg.TARGET_COLS]
         target = preprocess_target(target)
         train_x, val_x, train_y, val_y = train_test_split(df, target, test_size=0.2, 
                                                       shuffle=True, random_state=42, 
-                                                      stratify=target.iloc[:,[1, 2, 3, 4]].sum(axis=1))
+                                                      )
         
         
         

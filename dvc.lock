@@ -1,0 +1,35 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/data/make_dataset.py data/raw/train.csv data/interim/train.pkl
+      data/interim/target.pkl data/interim/train_val.pkl data/interim/target_val.pkl
+    deps:
+    - path: data/raw/train.csv
+      md5: 80ccab65fb115cbad143dbbd2bcd5577
+      size: 460676
+    outs:
+    - path: data/interim
+      md5: 1fbb2d1a4e36657a04ec3e7e927fee74.dir
+      size: 502113
+      nfiles: 4
+  features:
+    cmd: python src/features/build_features.py data/interim/train.pkl data/interim/train_val.pkl
+      data/processed/train.pkl data/processed/train_val.pkl
+    deps:
+    - path: data/interim/target.pkl
+      md5: 1fdef5c04a9fb5f99884122c0f1f5be8
+      size: 8618
+    - path: data/interim/train.pkl
+      md5: 74a104232a6b449cacdc809e13ca3070
+      size: 391256
+    - path: data/interim/train_val.pkl
+      md5: e5031d0df1ddb703427a3f96d06da610
+      size: 99536
+    - path: src/features/build_features.py
+      md5: 85571a081585363deb75bf847930c923
+      size: 1790
+    outs:
+    - path: data/processed
+      md5: f85f8a9fa7acee4443c5fe1569211d10.dir
+      size: 501063
+      nfiles: 2
